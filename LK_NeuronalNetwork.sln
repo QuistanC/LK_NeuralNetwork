@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LK_NeuronalNetwork", "LK_NeuronalNetwork\LK_NeuronalNetwork.csproj", "{CC48EAE2-CC1C-480E-9874-3E969554BC1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetworkUI", "NeuralNetworkUI\NeuralNetworkUI.csproj", "{001402F1-2067-4C2C-A2B2-F8A8EF0D363A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC48EAE2-CC1C-480E-9874-3E969554BC1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC48EAE2-CC1C-480E-9874-3E969554BC1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC48EAE2-CC1C-480E-9874-3E969554BC1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC48EAE2-CC1C-480E-9874-3E969554BC1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{001402F1-2067-4C2C-A2B2-F8A8EF0D363A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{001402F1-2067-4C2C-A2B2-F8A8EF0D363A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{001402F1-2067-4C2C-A2B2-F8A8EF0D363A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{001402F1-2067-4C2C-A2B2-F8A8EF0D363A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CFE0DFBB-7C56-41F3-B8C5-41C7CECCD39A}
+	EndGlobalSection
+EndGlobal
