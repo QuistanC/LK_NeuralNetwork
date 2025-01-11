@@ -10,8 +10,8 @@ namespace LK_NeuronalNetwork;
 
 public class Layer
 {
-    private int LayerIndex { get; set; }
-    private int NumNeurons { get; }
+    public int NumNeurons { get; }
+    public int NumInputs { get; }
     public double[,] Weights { get; set; }
     public double[] Inputs { get; set; }
     public double[] Outputs { get; set; }
@@ -20,22 +20,22 @@ public class Layer
     public Layer? PrevLayer { get; set; }
     public Layer? NextLayer { get; set; }
 
-    public Layer(int numInputs, int numNeurons, int layerIndex)
+    public Layer(int numInputs, int numNeurons)
     {
         NumNeurons = numNeurons;
+        NumInputs = numInputs;
         Outputs = new double[numNeurons];
         Inputs = new double[numInputs];
         Weights = new double[numNeurons, numInputs];
         Biases = new double[numNeurons];
         Gradients = new double[numNeurons];
 
-       LayerIndex = layerIndex;
 
         Random rand = new Random();
         for (int i = 0; i < numNeurons; i++)
         {
             Biases[i] = rand.NextDouble();
-            for (int j = 0; j < numNeurons; j++)
+            for (int j = 0; j < numInputs; j++)
             {
                 Weights[i, j] = rand.NextDouble() - 0.5;
             }
@@ -44,6 +44,7 @@ public class Layer
 
     public void Forward()
     {
+
         for (int i = 0; i < NumNeurons; i++)
         {
             Outputs[i] = 0.0;
@@ -60,11 +61,13 @@ public class Layer
             NextLayer.Inputs = Outputs;
             NextLayer.Forward();
         }
+
+
     }
 
-    public void Backward(double[] target = null)
+    public void Backward(double[] target = null, double learningRate = 0.1)
     {
-        if (NextLayer == null)
+        if (NextLayer == null && target != null)
         {
             for (int i = 0; i < NumNeurons; i++)
             {
@@ -88,9 +91,9 @@ public class Layer
         {
             for (int j = 0; j < Inputs.Length; j++)
             {
-                Weights[i, j] -= Gradients[i] * Inputs[j] * 0.01;
+                Weights[i, j] -= Gradients[i] * Inputs[j] * learningRate;
             }
-            Biases[i] -= Gradients[i] * 0.01;
+            Biases[i] -= Gradients[i] * learningRate;
         }
 
         if (PrevLayer != null)
@@ -101,27 +104,6 @@ public class Layer
 
     private double SigmoidActivation(double x) => 1.0 / (1.0 + Math.Exp(-x)); 
     private double ActivationDerivative(double x) => x * (1.0 - x);
-
-
-    public void Save(string filePath)
-    {
-        using StreamWriter writer = new StreamWriter(filePath);
-        for (int i = 0; i < NumNeurons; i++)
-        {
-            writer.WriteLine(string.Join(",", Weights.GetRow(i))); // Serialize weights
-            writer.WriteLine(Biases[i]); // Serialize biases
-        }
-    }
-
-    public void Load(string filePath)
-    {
-        using StreamReader reader = new StreamReader(filePath);
-        for (int i = 0; i < NumNeurons; i++)
-        {
-            Weights.SetRow(i, reader.ReadLine().Split(',').Select(double.Parse).ToArray());
-            Biases[i] = double.Parse(reader.ReadLine());
-        }
-    }
 
  
 
