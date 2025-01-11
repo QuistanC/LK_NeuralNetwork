@@ -133,31 +133,50 @@ namespace LK_NeuronalNetwork
             }
         }
 
-        public void LoadModel(string filePath)
-        {
-            using StreamReader reader = new(filePath);
-
-            // Read the model name and generation
-            ModelName = reader.ReadLine();
-            int generation = int.Parse(reader.ReadLine());
-
-            // Initialize layers
-            InitializeNetwork(InputSize, OutputSize, NumLayers, NeuronsPerLayer);
-
-            // Read weights and biases for each layer
-            foreach (var layer in Layers)
+        
+            public static NeuralNetwork LoadModel(string filePath)
             {
-                // Load weights
-                for (int i = 0; i < layer.Weights.GetLength(0); i++)
+                using StreamReader reader = new StreamReader(filePath);
+
+                // Read the model name and generation (metadata)
+                string modelName = reader.ReadLine();
+                int generation = int.Parse(reader.ReadLine());
+
+                // Read the input size, output size, number of layers, and neurons per layer
+                int inputSize = int.Parse(reader.ReadLine());
+                int outputSize = int.Parse(reader.ReadLine());
+                int numLayers = int.Parse(reader.ReadLine());
+                int neuronsPerLayer = int.Parse(reader.ReadLine());
+
+                // Initialize the network with the sizes
+                NeuralNetwork network = new NeuralNetwork(inputSize, outputSize, numLayers, neuronsPerLayer)
                 {
-                    double[] weights = reader.ReadLine().Split(',').Select(double.Parse).ToArray();
-                    layer.Weights.SetRow(i, weights);
+                    ModelName = modelName
+                };
+
+                // Load weights and biases for each layer
+                foreach (var layer in network.Layers)
+                {
+                    // Load weights
+                    for (int i = 0; i < layer.Weights.GetLength(0); i++)
+                    {
+                        double[] weights = reader.ReadLine()
+                            .Split(',')
+                            .Select(double.Parse)
+                            .ToArray();
+                        layer.Weights.SetRow(i, weights);
+                    }
+
+                    // Load biases
+                    double[] biases = reader.ReadLine()
+                        .Split(',')
+                        .Select(double.Parse)
+                        .ToArray();
+                    layer.Biases = biases;
                 }
 
-                // Load biases
-                double[] biases = reader.ReadLine().Split(',').Select(double.Parse).ToArray();
-                layer.Biases = biases;
-            }
+                return network;
+            
         }
 
         public void PrintImage(double[] image, int width = 28, int height = 28)

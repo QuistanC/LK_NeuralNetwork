@@ -10,7 +10,8 @@ using Microsoft.Win32;
 using LK_NeuronalNetwork;
 using LK_NeuronalNetwork.Utilities;
 using System.Windows.Media.Imaging;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using LK_NeuronalNetwork.Utilities.DataProcessHelper;
+using LK_NeuronalNetwork.Utilities.ImageHelpers;
 
 namespace NeuralNetworkUI
 {
@@ -67,7 +68,7 @@ namespace NeuralNetworkUI
                 Models.Add(Path.GetFileNameWithoutExtension(file));
             }
         }
-        //Test
+
         private void InitializeNewModel()
         {
             // Default values for layers and neurons
@@ -97,8 +98,8 @@ namespace NeuralNetworkUI
             }
 
             // Load training data (dummy data in this case, replace with actual data)
-            double[][] trainImages = GenerateDummyData();
-            double[][] trainLabels = GenerateDummyLabels();
+            double[][] trainImages = GenerateTrainingData();
+            double[][] trainLabels = GenerateTrainingLabels();
 
             // Train the network
             await Task.Run(() =>
@@ -153,12 +154,37 @@ namespace NeuralNetworkUI
             }
 
             string modelPath = Path.Combine(_selectedModelDirectory, $"{SelectedModel}.txt");
-            _currentNetwork = _currentNetwork.LoadModel(modelPath);
+            _currentNetwork = NeuralNetwork.LoadModel(modelPath);
             PredictionResult = $"Model {SelectedModel} loaded.";
         }
 
-        private double[][] GenerateDummyData() => new double[100][]; // Replace with actual data
-        private double[][] GenerateDummyLabels() => new double[100][]; // Replace with actual labels
-        private double[] ProcessImage(string imagePath) => new double[784]; // Replace with actual processing
+        private double[][] GenerateTrainingData()
+        {
+            string trainingDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TrainingData");
+
+            string trainImagesPath = Path.Combine(trainingDataPath, "train-images.idx3-ubyte");
+
+            double[][] trainImages = IdexFileReader.LoadImages(trainImagesPath);
+            int originalWidth = 28, originalHeight = 28;
+            int poolSize = 2, stride = 2;
+
+            double[][] pooledTrainImages = trainImages
+                .Select(image => Pooling.ApplyPooling(image, originalWidth, originalHeight, poolSize, stride))
+                .ToArray();
+            return pooledTrainImages;
+        }
+        private double[][] GenerateTrainingLabels()
+        {
+            string trainingDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TrainingData");
+            string trainLabelsPath = Path.Combine(trainingDataPath, "train-labels.idx1-ubyte");
+            int[] trainLabels = IdexFileReader.LoadLabels(trainLabelsPath);
+            double[][] trainLabelsOneHot = IdexFileReader.OneHotEncodeLabels(trainLabels, 10);
+
+            return trainLabelsOneHot;
+        }
+        private double[] ProcessImage(string imagePath)
+        {
+
+        }
     }
 }
