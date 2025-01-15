@@ -7,13 +7,24 @@
         mc:Ignorable="d"
         Title="Neuronal Network" Height="450" Width="800">
     <Window.DataContext>
-        <local:MainViewmodel />
+        <local:MainViewmodel/>
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button
+            Height="50"
+            Width="80"
+            Content="Train"
+            Command="{Binding TrainNetworkCommand}"
+            Grid.Column="1"
+                ></Button>
 
         <Image
     Margin="15"
@@ -30,5 +41,6 @@
     Command="{Binding OpenDialogCommand}"
     HorizontalAlignment="Left"/>
 
+        
     </Grid>
 </Window>

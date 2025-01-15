@@ -19,6 +19,7 @@ namespace NeuralNetworkUI
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }
     }
 }

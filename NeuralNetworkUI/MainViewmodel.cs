@@ -184,7 +184,7 @@ namespace NeuralNetworkUI
         }
         private double[] ProcessImage(string imagePath)
         {
-
+            return null;
         }
     }
 }

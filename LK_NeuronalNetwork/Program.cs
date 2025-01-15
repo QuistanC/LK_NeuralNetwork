@@ -54,7 +54,7 @@ public class Program
         string modelPath = "model_weights.txt";
         if (File.Exists(modelPath))
         {
-            network.LoadModel(modelPath);
+            //network.LoadModel(modelPath);
             Console.WriteLine("Model weights loaded successfully.");
         }
         else
